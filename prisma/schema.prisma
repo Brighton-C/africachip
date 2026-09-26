@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+ 
+}
+
+enum Role {
+  superadmin
+  owner
+  dispatcher
+  technician
+  customer
+}
+
+enum BookingStatus {
+  pending
+  confirmed
+  in_progress
+  completed
+}
+
+enum LocationType {
+  workshop
+  customer
+}
+
+enum FileType {
+  original
+  modified
+}
+
+model User {
+  id           String    @id @default(uuid())
+  name         String
+  email        String    @unique
+  phone        String?
+  role         Role      @default(customer)
+  vehicles     Vehicle[]
+  bookings     Booking[] @relation("CustomerBookings")
+  jobsAssigned Job[]     @relation("TechnicianJobs")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Vehicle {
+  id           String    @id @default(uuid())
+  customer     User      @relation(fields: [customerId], references: [id])
+  customerId   String
+  make         String
+  model        String
+  year         Int
+  engine       String?
+  registration String?
+  notes        String?
+  bookings     Booking[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Service {
+    id          String    @id @default(uuid())
+  name        String    @unique
+  description String?
+  price       Decimal?  @db.Decimal(10, 2)
+  bookings    Booking[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Booking {
+  id            String        @id @default(uuid())
+  customer      User          @relation("CustomerBookings", fields: [customerId], references: [id])
+  customerId    String
+  vehicle       Vehicle       @relation(fields: [vehicleId], references: [id])
+  vehicleId     String
+  service       Service       @relation(fields: [serviceId], references: [id])
+  serviceId     String
+  locationType  LocationType
+  address       String?
+  preferredDate DateTime
+  status        BookingStatus @default(pending)
+  quotedPrice   Decimal?      @db.Decimal(10, 2)
+  notes         String?
+  job           Job?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Job {
+  id              String        @id @default(uuid())
+  booking         Booking       @relation(fields: [bookingId], references: [id])
+  bookingId       String        @unique
+  technician      User?         @relation("TechnicianJobs", fields: [technicianId], references: [id])
+  technicianId    String?
+  ecuInformation  String?
+  technicianNotes String?
+  status          BookingStatus @default(pending)
+  completedAt     DateTime?
+  files           File[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model File {
+  id          String   @id @default(uuid())
+  job         Job      @relation(fields: [jobId], references: [id])
+  jobId       String
+  type        FileType
+  filename    String
+  storagePath String
+  createdAt   DateTime @default(now())
+}
