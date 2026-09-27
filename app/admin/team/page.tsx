@@ -4,10 +4,11 @@ import { redirect } from "next/navigation";
 import { createStaffAccount, setAccountActive } from "@/lib/actions/team";
 import RoleSelect from "@/components/admin/RoleSelect";
 import { ROLE_LABELS } from "@/lib/roleLabels";
+import { Role } from "@prisma/client";
 
-const OWNER_ROLES = ["superadmin", "owner"];
-const HIGH_PRIVILEGE_ROLES = ["superadmin", "owner"];
-const ALL_ROLES = ["dispatcher", "owner", "superadmin"];
+const OWNER_ROLES: Role[] = ["superadmin", "owner"];
+const HIGH_PRIVILEGE_ROLES: Role[] = ["superadmin", "owner"];
+const ALL_ROLES: Role[] = ["dispatcher", "owner", "superadmin"];
 
 export default async function TeamPage({
   searchParams,
