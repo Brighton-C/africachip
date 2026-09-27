@@ -21,5 +21,5 @@ export async function submitContactForm(formData: FormData) {
     text: `Name: ${name}\nContact: ${contact}\n\nMessage:\n${message}`,
   });
 
-  redirect("/?contact=sent#contact");
+  redirect("/contact?sent=true");
 }

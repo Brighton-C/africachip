@@ -5,16 +5,16 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-navy-950 text-white mt-auto">
+    <footer className="bg-fog-100 border-t border-steel-500/10 mt-auto">
       <div className="container-page py-14">
         <div className="grid gap-10 md:grid-cols-3">
 
           {/* Workshop details */}
           <div>
-            <h3 className="font-display font-semibold text-sm">
+            <h3 className="font-display font-semibold text-sm text-navy-950">
               Harare Workshop
             </h3>
-            <div className="mt-4 space-y-3 text-sm text-white/70">
+            <div className="mt-4 space-y-3 text-sm text-steel-500">
               <p className="flex items-start gap-2">
                 <MapPin size={16} className="mt-0.5 shrink-0 text-orange-500" />
                 Cnr Crowborough &amp; Heany Rd, Warren Park D
@@ -22,11 +22,11 @@ export default function Footer() {
               <p className="flex items-center gap-2">
                 <Phone size={16} className="shrink-0 text-orange-500" />
                 <span>
-                  <Link href="tel:+263771250250" className="hover:text-white">
+                  <Link href="tel:+263771250250" className="hover:text-navy-950">
                     +263 771 250 250
                   </Link>
                   {" / "}
-                  <Link href="tel:+263782341400" className="hover:text-white">
+                  <Link href="tel:+263782341400" className="hover:text-navy-950">
                     +263 782 341 400
                   </Link>
                 </span>
@@ -35,7 +35,7 @@ export default function Footer() {
                 <Mail size={16} className="shrink-0 text-orange-500" />
                 <Link
                   href="mailto:admin@tamroexpress.co.zw"
-                  className="hover:text-white"
+                  className="hover:text-navy-950"
                 >
                   admin@tamroexpress.co.zw
                 </Link>
@@ -45,19 +45,19 @@ export default function Footer() {
 
           {/* Tamro Express links */}
           <div>
-            <h3 className="font-display font-semibold text-sm">
+            <h3 className="font-display font-semibold text-sm text-navy-950">
               Tamro Express
             </h3>
-            <div className="mt-4 space-y-2 text-sm text-white/70">
+            <div className="mt-4 space-y-2 text-sm text-steel-500">
               <Link
                 href="https://tamroexpress.co.zw"
-                className="block hover:text-white"
+                className="block hover:text-navy-950"
               >
                 Main Website
               </Link>
               <Link
                 href="https://tamroexpress.co.zw/shop"
-                className="block hover:text-white"
+                className="block hover:text-navy-950"
               >
                 Tamro Express Shop
               </Link>
@@ -66,11 +66,13 @@ export default function Footer() {
 
           {/* Social */}
           <div>
-            <h3 className="font-display font-semibold text-sm">Follow Us</h3>
+            <h3 className="font-display font-semibold text-sm text-navy-950">
+              Follow Us
+            </h3>
             <div className="mt-4 flex gap-3">
               <Link
                 href="https://facebook.com/YOUR_PAGE"
-                className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20"
+                className="w-9 h-9 rounded-full bg-white border border-steel-500/15 flex items-center justify-center text-steel-500 hover:text-orange-500 hover:border-orange-500/30"
                 aria-label="Facebook"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -79,7 +81,7 @@ export default function Footer() {
               </Link>
               <Link
                 href="https://instagram.com/YOUR_HANDLE"
-                className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20"
+                className="w-9 h-9 rounded-full bg-white border border-steel-500/15 flex items-center justify-center text-steel-500 hover:text-orange-500 hover:border-orange-500/30"
                 aria-label="Instagram"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -88,7 +90,7 @@ export default function Footer() {
               </Link>
               <Link
                 href="https://twitter.com/YOUR_HANDLE"
-                className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20"
+                className="w-9 h-9 rounded-full bg-white border border-steel-500/15 flex items-center justify-center text-steel-500 hover:text-orange-500 hover:border-orange-500/30"
                 aria-label="X (Twitter)"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -100,7 +102,7 @@ export default function Footer() {
 
         </div>
 
-        <div className="mt-12 pt-6 border-t border-white/10 text-xs text-white/50">
+        <div className="mt-12 pt-6 border-t border-steel-500/10 text-xs text-steel-500">
           © {year} Tamro Express. All rights reserved.
         </div>
       </div>

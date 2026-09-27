@@ -1,8 +1,14 @@
 import { prisma } from "@/lib/prisma";
-import { updateBookingStatus } from "@/lib/actions/admin-booking";
+import Link from "next/link";
 import StatusSelect from "./StatusSelect";
 
-const STATUSES = ["pending", "confirmed", "in_progress", "completed"];
+
+const STATUS_LABELS: Record<string, string> = {
+  pending: "Pending",
+  confirmed: "Confirmed",
+  in_progress: "In Progress",
+  completed: "Completed",
+};
 
 export default async function AdminBookingsPage() {
   const bookings = await prisma.booking.findMany({
@@ -10,44 +16,87 @@ export default async function AdminBookingsPage() {
     orderBy: { createdAt: "desc" },
   });
 
-  return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="text-2xl font-semibold mb-6">Bookings</h1>
+  const counts = {
+    pending: bookings.filter((b) => b.status === "pending").length,
+    confirmed: bookings.filter((b) => b.status === "confirmed").length,
+    in_progress: bookings.filter((b) => b.status === "in_progress").length,
+    completed: bookings.filter((b) => b.status === "completed").length,
+  };
 
-      <div className="space-y-4">
+  return (
+    <div className="max-w-5xl mx-auto px-4 py-10">
+      <h1 className="font-display font-bold text-2xl mb-6">Bookings</h1>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        {Object.entries(counts).map(([key, value]) => (
+          <div
+            key={key}
+            className="bg-white rounded-xl border border-steel-500/10 p-4"
+          >
+            <p className="font-display font-bold text-2xl text-navy-950">
+              {value}
+            </p>
+            <p className="text-xs text-steel-500 mt-1">
+              {STATUS_LABELS[key]}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div className="space-y-3">
         {bookings.map((booking) => (
-          <div key={booking.id} className="border rounded p-4">
+          <div
+            key={booking.id}
+            className="bg-white rounded-2xl border border-steel-500/10 p-5 shadow-sm hover:shadow-md transition-shadow"
+          >
             <div className="flex justify-between items-start gap-4">
-              <div>
-                <p className="font-medium">{booking.service.name}</p>
-                <p className="text-sm text-gray-600">
-                  {booking.customer.name} — {booking.customer.email}
+              <div className="flex-1">
+                <p className="font-display font-semibold mb-2">
+                  {booking.service.name}
                 </p>
-                <p className="text-sm text-gray-600">{booking.customer.phone}</p>
-                <p className="text-sm text-gray-600">
-                  {booking.vehicle.make} {booking.vehicle.model} (
-                  {booking.vehicle.year})
-                </p>
-                <p className="text-sm text-gray-600">
-                  Preferred: {booking.preferredDate.toLocaleDateString()} —{" "}
-                  {booking.locationType === "workshop"
-                    ? "Workshop"
-                    : `Customer location${booking.address ? `: ${booking.address}` : ""}`}
-                </p>
+
+                                <div className="grid sm:grid-cols-2 gap-x-6 gap-y-1 text-sm text-steel-500">
+                  <p>
+                    <span className="font-medium text-navy-950">Customer:</span>{" "}
+                    {booking.customer.name} — {booking.customer.phone}
+                  </p>
+                  <p>
+                    <span className="font-medium text-navy-950">Vehicle:</span>{" "}
+                    {booking.vehicle.make} {booking.vehicle.model} (
+                    {booking.vehicle.year})
+                  </p>
+                  <p>
+                    <span className="font-medium text-navy-950">Date:</span>{" "}
+                    {booking.preferredDate.toLocaleDateString()}
+                  </p>
+                  <p>
+                    <span className="font-medium text-navy-950">Location:</span>{" "}
+                    {booking.locationType === "workshop"
+                      ? "Workshop"
+                      : `Customer location${booking.address ? `: ${booking.address}` : ""}`}
+                  </p>
+                </div>
+
                 {booking.notes && (
-                  <p className="text-sm text-gray-600 mt-1">
-                    Notes: {booking.notes}
+                  <p className="text-sm text-steel-500 mt-2 italic">
+                    &quot;{booking.notes}&quot;
                   </p>
                 )}
 
                 {booking.job && (
-                  <a href={`/admin/jobs/${booking.job.id}`} className="text-sm underline">
-                    Open job
-                  </a>
+                  <Link
+                    href={`/admin/jobs/${booking.job.id}`}
+                    className="text-xs font-medium text-orange-500 underline mt-2 inline-block"
+                  >
+                    Open job →
+                  </Link>
                 )}
               </div>
 
-              <StatusSelect bookingId={booking.id} currentStatus={booking.status} />
+              <StatusSelect
+                bookingId={booking.id}
+                currentStatus={booking.status}
+              />
             </div>
           </div>
         ))}

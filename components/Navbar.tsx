@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { signOut } from "@/lib/actions/auth";
+import Image from "next/image";
 
 const ADMIN_ROLES = ["superadmin", "owner", "dispatcher"];
 
@@ -23,13 +24,23 @@ export default async function Navbar() {
   return (
     <nav className="bg-white border-b border-steel-500/10">
       <div className="container-page py-4 flex justify-between items-center">
-        <Link href="/" className="font-display text-lg tracking-tight text-navy-950">
-          AfricaChip Tuning
-        </Link>
+        <Link href="/" className="flex items-center">
+  <Image
+    src="/images/africa chip.png"
+    alt="AfricaChip Tuning"
+    width={66}
+    height={52}
+    priority
+    className="h-10 w-auto"
+  />
+</Link>
         <div className="flex items-center gap-6 text-sm text-navy-950">
           <Link href="/services" className="hover:text-orange-500">
             Services
           </Link>
+<Link href="/contact" className="hover:text-orange-500">
+  Contact
+</Link>
 
           {user ? (
             <>
