@@ -1,107 +1,297 @@
+import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { ArrowRight, ArrowUpRight, Gauge, Settings2, Wrench } from "lucide-react";
+import { submitContactForm } from "@/lib/actions/contact";
+import { 
+  
+  CalendarDays, 
+  CheckCircle2, 
+   
+  MapPin, 
+  MessageCircle, 
+   
+  
+} from "lucide-react";
 
-export default async function HomePage() {
+function getServiceCategory(name: string) {
+  const lower = name.toLowerCase();
+
+  if (lower.includes("stage") || lower.includes("remap")) {
+    return { label: "Performance", icon: Gauge };
+  }
+
+  if (
+    lower.includes("dpf") ||
+    lower.includes("adblue") ||
+    lower.includes("emission")
+  ) {
+    return { label: "Emissions", icon: Settings2 };
+  }
+
+  if (lower.includes("diagnostic")) {
+    return { label: "Diagnostics", icon: Settings2 };
+  }
+
+  return { label: "Vehicle Service", icon: Wrench };
+}
+
+function chunkArray<T>(arr: T[], size: number): T[][] {
+  const chunks: T[][] = [];
+  for (let i = 0; i < arr.length; i += size) {
+    chunks.push(arr.slice(i, i + size));
+  }
+  return chunks;
+}
+
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ contact?: string }>;
+}) {
   const services = await prisma.service.findMany({
     orderBy: { createdAt: "asc" },
-    take: 4,
   });
+  const { contact } = await searchParams;
+  const contactSent = contact === "sent";
 
   return (
-    <div>
-      <section className="max-w-3xl mx-auto px-4 pt-20 pb-16 text-center">
-        <h1 className="text-3xl md:text-4xl font-semibold">
-          ECU Remapping and Diagnostics
-        </h1>
-        <p className="text-gray-600 mt-3 text-lg">
-          Book a service for your vehicle. We handle the rest.
-        </p>
-        <div className="mt-8 flex justify-center gap-4">
-          <Link href="/signup" className="bg-black text-white rounded px-6 py-3">
-            Book a Service
-          </Link>
-          <Link href="/services" className="border rounded px-6 py-3">
-            View Services
-          </Link>
+    <main className="min-h-screen bg-fog-100 text-navy-950">
+
+      {/* -------------------------------------------------- */}
+      {/* HERO — headline + contact card, truck as background */}
+      {/* -------------------------------------------------- */}
+
+            <section className="relative overflow-hidden bg-white"> 
+ 
+        <div className="mx-auto max-w-7xl px-5 pb-24 pt-8 lg:px-8"> 
+ 
+           
+ 
+ 
+          {/* Hero content */} 
+          <div className="mt-10 grid gap-6 "> 
+ 
+            {/* Main hero card */} 
+            <div className="relative min-h-[520px] overflow-hidden rounded-[2rem] bg-white p-7 shadow-sm md:p-10"> 
+ 
+              <div className="relative z-20 max-w-xl"> 
+ 
+ 
+                <h1 className="mt-5 font-display text-4xl leading-[1.05] tracking-tight text-navy-950 md:text-6xl"> 
+                  ECU performance 
+                  <br /> 
+                  <span className="text-steel-500"> 
+                    & diagnostics 
+                  </span> 
+                </h1> 
+ 
+                <p className="mt-5 max-w-md text-sm leading-6 text-steel-500 md:text-base"> 
+                  Professional vehicle tuning, diagnostics and ECU services 
+                  at our workshop or at your location. 
+                </p> 
+ 
+                <div className="mt-7 flex flex-wrap gap-3"> 
+                  <Link 
+                    href="/signup" 
+                    className="inline-flex items-center gap-2 rounded-xl bg-navy-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-navy-950/90" 
+                  > 
+                    Book a service 
+                    <ArrowRight size={16} /> 
+                  </Link> 
+ 
+                  <Link 
+                    href="/services" 
+                    className="rounded-xl border border-steel-500/15 bg-fog-100 px-5 py-3 text-sm font-medium text-navy-950 transition hover:bg-fog-100/70" 
+                  > 
+                    Explore services 
+                  </Link> 
+                </div> 
+ 
+              </div> 
+ 
+ 
+              {/* Vehicle image */} 
+              <div className="absolute top-0 right-0 z-10 w-[80%] md:w-[62%] lg:w-[65%]">
+                <div className="absolute inset-0 -z-10 rounded-full bg-orange-500/10 blur-3xl" /> 
+ 
+                <Image 
+                  src="/images/truck3.png" 
+                  alt="Vehicle serviced by AfricaChip" 
+                  width={1024} 
+                  height={1024} 
+                  priority 
+                  className="h-auto w-full object-contain" 
+                /> 
+              </div> 
+ 
+            </div> 
+ 
+ 
+            {/* -------------------------------------------------- */} 
+            {/* SERVICE ASSISTANT PANEL */} 
+            {/* -------------------------------------------------- */} 
+ 
+            
+
+          </div>
         </div>
+
+
+       
+
       </section>
 
-      <section className="max-w-3xl mx-auto px-4 py-12 grid gap-6 md:grid-cols-3">
-        <div>
-          <h3 className="font-medium">Diagnostics first</h3>
-          <p className="text-gray-600 text-sm mt-1">
-            We tell you what is wrong before any work starts.
-          </p>
-        </div>
-        <div>
-          <h3 className="font-medium">Workshop or your location</h3>
-          <p className="text-gray-600 text-sm mt-1">
-            Book at our workshop, or have us come to you.
-          </p>
-        </div>
-        <div>
-          <h3 className="font-medium">Direct contact</h3>
-          <p className="text-gray-600 text-sm mt-1">
-            Reach us on WhatsApp, not a support ticket.
-          </p>
-        </div>
-      </section>
 
-      <section className="max-w-3xl mx-auto px-4 py-12 border-t">
-        <h2 className="text-xl font-semibold mb-6">Services</h2>
-        <div className="grid gap-4 md:grid-cols-2">
-          {services.map((service) => (
-            <div key={service.id} className="border rounded p-4">
-              <h3 className="font-medium">{service.name}</h3>
-              <p className="text-gray-600 text-sm mt-1">{service.description}</p>
+      {/* -------------------------------------------------- */}
+      {/* SERVICES — horizontal step-row style */}
+      {/* -------------------------------------------------- */}
+
+      <section className="bg-white">
+
+        <div className="container-page py-20">
+
+          <div className="mb-14">
+            <p className="text-xs font-semibold uppercase tracking-wider text-orange-500">
+              What we do
+            </p>
+            <h2 className="mt-2 font-display font-bold text-3xl tracking-tight">
+              Our services
+            </h2>
+          </div>
+
+          {chunkArray(services, 4).map((row, rowIndex) => (
+            <div key={rowIndex} className="relative mb-14 last:mb-0">
+
+              {row.length > 1 && (
+                <div className="hidden md:block absolute top-6 left-[12.5%] right-[12.5%] h-px bg-steel-500/20" />
+              )}
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
+                {row.map((service, i) => {
+                  const category = getServiceCategory(service.name);
+                  const Icon = category.icon;
+                  const globalIndex = rowIndex * 4 + i;
+
+                  return (
+                    <div
+                      key={service.id}
+                      className="relative text-center md:text-left"
+                    >
+                      <div className="relative z-10 mx-auto md:mx-0 w-12 h-12 rounded-full bg-white border border-steel-500/20 flex items-center justify-center">
+                        <Icon size={20} className="text-orange-500" />
+                      </div>
+
+                      <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-orange-500">
+                        {String(globalIndex + 1).padStart(2, "0")}{" "}
+                        {category.label}
+                      </p>
+
+                      <h3 className="mt-1 font-display font-semibold">
+                        {service.name}
+                      </h3>
+
+                      <p className="mt-1 text-sm text-steel-500 leading-6">
+                        {service.description}
+                      </p>
+
+                      <Link
+                        href="/signup"
+                        className="mt-3 inline-flex items-center justify-center md:justify-start gap-1 text-xs font-medium text-orange-500"
+                      >
+                        Book this service
+                        <ArrowRight size={13} />
+                      </Link>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           ))}
+
         </div>
-        <Link href="/services" className="inline-block mt-6 underline">
-          View all services
-        </Link>
+
       </section>
 
-      <section className="max-w-3xl mx-auto px-4 py-12 border-t">
-        <h2 className="text-xl font-semibold mb-6">How It Works</h2>
-        <div className="grid gap-6 md:grid-cols-3">
-          <div>
-            <div className="text-2xl font-semibold text-gray-400">1</div>
-            <h3 className="font-medium mt-1">Request a service</h3>
-            <p className="text-gray-600 text-sm mt-1">
-              Pick your vehicle and service, submit online.
+
+      {/* -------------------------------------------------- */}
+      {/* HOW IT WORKS */}
+      {/* -------------------------------------------------- */}
+
+      <section className="bg-fog-100">
+
+        <div className="container-page py-20">
+
+          <div className="max-w-xl">
+
+            <p className="text-xs font-semibold uppercase tracking-wider text-orange-500">
+              Simple process
             </p>
-          </div>
-          <div>
-            <div className="text-2xl font-semibold text-gray-400">2</div>
-            <h3 className="font-medium mt-1">We confirm and schedule</h3>
-            <p className="text-gray-600 text-sm mt-1">
-              Our team confirms details and books you in.
+
+            <h2 className="mt-2 font-display font-bold text-3xl tracking-tight">
+              Get your vehicle serviced
+            </h2>
+
+            <p className="mt-3 text-sm leading-6 text-steel-500">
+              From booking to completion, we keep the process straightforward.
             </p>
+
           </div>
-          <div>
-            <div className="text-2xl font-semibold text-gray-400">3</div>
-            <h3 className="font-medium mt-1">We complete the job</h3>
-            <p className="text-gray-600 text-sm mt-1">
-              At our workshop or your location.
-            </p>
+
+
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
+
+            {[
+              {
+                number: "01",
+                title: "Tell us about your vehicle",
+                description:
+                  "Choose your service and provide the basic details about your vehicle.",
+              },
+              {
+                number: "02",
+                title: "Choose where",
+                description:
+                  "Bring your vehicle to our workshop or arrange a service at your location.",
+              },
+              {
+                number: "03",
+                title: "We handle the rest",
+                description:
+                  "Our team carries out the service and keeps you informed throughout the job.",
+              },
+            ].map((step) => (
+
+              <div
+                key={step.number}
+                className="rounded-2xl bg-white p-6 shadow-sm"
+              >
+
+                <span className="font-display font-bold text-3xl text-orange-500">
+                  {step.number}
+                </span>
+
+                <h3 className="mt-6 font-display font-semibold text-lg">
+                  {step.title}
+                </h3>
+
+                <p className="mt-2 text-sm leading-6 text-steel-500">
+                  {step.description}
+                </p>
+
+              </div>
+
+            ))}
+
           </div>
+
         </div>
+
       </section>
 
-      <section className="border-t bg-gray-50">
-        <div className="max-w-3xl mx-auto px-4 py-10 text-center">
-          <p className="text-gray-700 mb-4">
-            Questions before booking? Message us on WhatsApp.
-          </p>
-          
-           <a href="https://wa.me/263771648305"
-            className="inline-block bg-green-600 text-white rounded px-6 py-3"
-          >
-            Chat on WhatsApp
-          </a>
-        </div>
-      </section>
-    </div>
+    </main>
   );
 }
+
+
+
