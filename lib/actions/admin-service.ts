@@ -4,8 +4,9 @@ import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { Role } from "@prisma/client";
 
-const OWNER_ROLES = ["superadmin", "owner"];
+const OWNER_ROLES: Role[] = ["superadmin", "owner"];
 
 async function requireAdmin() {
   const supabase = await createClient();
@@ -20,7 +21,7 @@ async function requireAdmin() {
     select: { role: true },
   });
 
-  if (!dbUser || !ADMIN_ROLES.includes(dbUser.role)) {
+  if (!dbUser || !OWNER_ROLES.includes(dbUser.role)) {
     throw new Error("Not authorized.");
   }
 }
