@@ -83,7 +83,7 @@ export default async function ContactPage({
                     Workshop
                   </p>
                   <p className="mt-2 flex items-start gap-2 text-sm">
-                    <MapPin size={16} className="mt-0.5 shrink-0 text-orange-500" />
+                    <MapPin size={16} className="mt-0.5 shrink-0 text-steel-500" />
                     Cnr Crowborough &amp; Heany Rd, Warren Park D, Harare
                   </p>
                 </div>
@@ -93,7 +93,7 @@ export default async function ContactPage({
                     Phone / WhatsApp
                   </p>
                   <p className="mt-2 flex items-center gap-2 text-sm">
-                    <Phone size={16} className="shrink-0 text-orange-500" />
+                    <Phone size={16} className="shrink-0 text-steel-500" />
                     <span>
                       <Link href="tel:+263771250250" className="hover:text-white/80">
                         +263 771 250 250
@@ -111,7 +111,7 @@ export default async function ContactPage({
                     Email
                   </p>
                   <p className="mt-2 flex items-center gap-2 text-sm">
-                    <Mail size={16} className="shrink-0 text-orange-500" />
+                    <Mail size={16} className="shrink-0 text-steel-500" />
                     <Link
                       href="mailto:admin@tamroexpress.co.zw"
                       className="hover:text-white/80"
@@ -124,7 +124,7 @@ export default async function ContactPage({
 
               <div className="mt-10 pt-6 border-t border-white/10">
                 <Link
-                  href="https://wa.me/YOURNUMBER"
+                  href="https://wa.me/263777973410"
                   className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 text-sm font-medium text-white transition hover:opacity-90"
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="white">

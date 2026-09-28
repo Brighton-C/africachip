@@ -5,7 +5,7 @@ export default function WhatsAppButton() {
     <div className="fixed bottom-6 right-6 z-50">
       <span className="absolute inset-0 rounded-full bg-[#25D366] opacity-60 animate-ping" />
       <Link
-        href="https://wa.me/YOURNUMBER"
+        href="https://wa.me/263777973410"
         aria-label="Chat with us on WhatsApp"
         className="relative flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] shadow-lg transition-transform hover:scale-105"
       >

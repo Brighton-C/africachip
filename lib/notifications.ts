@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { getAdminEmails } from "@/lib/adminEmails";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -11,8 +12,8 @@ type BookingDetails = {
 
 export async function notifyAdminsOfBooking(details: BookingDetails) {
   await resend.emails.send({
-    from: "AfroChip <noreply@mail.tamroexpress.co.zw>",
-    to: process.env.ADMIN_NOTIFICATION_EMAIL!,
+    from: "AfricaChip <noreply@mail.tamroexpress.co.zw>",
+    to: getAdminEmails(),
     subject: `New booking: ${details.serviceName}`,
     text: `New service request.\n\nService: ${details.serviceName}\nVehicle: ${details.vehicleLabel}\nPreferred date: ${details.preferredDate}\nLocation: ${details.location}\n\nView it in the admin dashboard.`,
   });

@@ -70,10 +70,10 @@ export default async function HomePage() {
                         className="relative text-center md:text-left"
                       >
                         <div className="relative z-10 mx-auto md:mx-0 w-12 h-12 rounded-full bg-white border border-steel-500/20 flex items-center justify-center">
-                          <Icon size={20} className="text-orange-500" />
+                          <Icon size={20} className="text-steel-500" />
                         </div>
 
-                        <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-orange-500">
+                        <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-steel-500">
                           {String(globalIndex + 1).padStart(2, "0")}{" "}
                           {category.label}
                         </p>

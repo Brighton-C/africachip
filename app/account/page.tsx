@@ -47,7 +47,7 @@ export default async function AccountPage() {
           href="/account/vehicles"
           className="bg-white rounded-2xl border border-steel-500/10 p-6 shadow-sm hover:shadow-md transition-shadow"
         >
-          <Car className="text-orange-500 mb-3" size={22} />
+          <Car className="text-steel-500 mb-3" size={22} />
           <p className="font-display font-semibold">My Vehicles</p>
           <p className="text-sm text-steel-500 mt-1">
             Add or view your saved vehicles.
@@ -57,7 +57,7 @@ export default async function AccountPage() {
           href="/account/bookings/new"
           className="bg-white rounded-2xl border border-steel-500/10 p-6 shadow-sm hover:shadow-md transition-shadow"
         >
-          <CalendarPlus className="text-orange-500 mb-3" size={22} />
+          <CalendarPlus className="text-steel-500 mb-3" size={22} />
           <p className="font-display font-semibold">Request a Service</p>
           <p className="text-sm text-steel-500 mt-1">
             Book a new service for your vehicle.
@@ -68,7 +68,7 @@ export default async function AccountPage() {
       <div className="bg-white rounded-2xl border border-steel-500/10 p-6">
         <div className="flex justify-between items-center mb-4">
           <p className="font-display font-semibold flex items-center gap-2">
-            <ClipboardList size={18} className="text-orange-500" />
+            <ClipboardList size={18} className="text-steel-500" />
             Recent Requests
           </p>
           <Link
