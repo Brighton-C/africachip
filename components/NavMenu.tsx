@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { signOut } from "@/lib/actions/auth";
+import { createClient } from "@/lib/supabase/client";
 
 export default function NavMenu({
   loggedIn,
@@ -14,6 +15,21 @@ export default function NavMenu({
   isAdmin: boolean;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  // Keep the server-rendered navbar in step with the browser's real session.
+  // Only refreshes when the two disagree, so it doesn't fire on every tab focus.
+  useEffect(() => {
+    const supabase = createClient();
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!!session !== loggedIn) {
+        router.refresh();
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [loggedIn, router]);
 
   // The menu counts as open only on the page where it was opened, so it
   // closes by itself whenever the route changes.
