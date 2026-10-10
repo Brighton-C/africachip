@@ -47,6 +47,9 @@ export default function NavMenu({
         <Link href="/services" className="hover:text-orange-500">
           Services
         </Link>
+                <Link href="/software" className="hover:text-orange-500">
+          Software
+        </Link>
         <Link href="/contact" className="hover:text-orange-500">
           Contact
         </Link>
@@ -103,6 +106,9 @@ export default function NavMenu({
           <div className="container-page py-2 text-sm text-navy-950">
             <Link href="/services" onClick={close} className={mobileLink}>
               Services
+            </Link>
+                            <Link href="/software" onClick={close} className={mobileLink}>
+              Software
             </Link>
             <Link href="/contact" onClick={close} className={mobileLink}>
               Contact

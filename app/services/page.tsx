@@ -38,9 +38,9 @@ export default async function HomePage() {
             <h1 className="mt-2 font-display font-bold text-3xl md:text-4xl tracking-tight">
               Our Services
             </h1>
-            <p className="mt-3 max-w-lg text-sm leading-6 text-steel-500">
-              Performed only where legally permitted for the vehicle&apos;s
-              registration, use, and jurisdiction.
+                        <p className="mt-3 max-w-lg text-sm leading-6 text-steel-500">
+              ECU tuning, diagnostics, programming and repairs for cars and
+              trucks.
             </p>
           </div>
         </div>

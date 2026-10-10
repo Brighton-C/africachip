@@ -113,3 +113,13 @@ model File {
   storagePath String
   createdAt   DateTime @default(now())
 }
+
+model Software {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  price       Decimal? @db.Decimal(10, 2)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

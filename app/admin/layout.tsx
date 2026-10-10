@@ -55,6 +55,14 @@ export default async function AdminLayout({
               Team
             </Link>
           )}
+                    {OWNER_ROLES.includes(dbUser.role) && (
+            <Link
+              href="/admin/software"
+              className="font-medium hover:text-orange-500"
+            >
+              Software
+            </Link>
+          )}
         </div>
       </div>
       {children}
