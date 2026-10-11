@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { getServiceCategory } from "@/lib/serviceCategory";
 import { createClient } from "@/lib/supabase/server";
+
+import { WHATSAPP_NUMBER } from "@/lib/contact";
 
 function chunkArray<T>(arr: T[], size: number): T[][] {
   const chunks: T[][] = [];
@@ -11,6 +13,31 @@ function chunkArray<T>(arr: T[], size: number): T[][] {
   }
   return chunks;
 }
+
+const BENEFITS = [
+  "Increased engine life",
+  "Increased fuel efficiency",
+  "Increased turbocharger lifespan",
+  "Increased power",
+  "No more loss of time performing DPF regeneration or being stuck in limp mode. The solutions are permanent and carry a 1-year warranty on any related problems.",
+  "Over 6 years of experience and numerous references.",
+];
+
+const SYMPTOMS = [
+  "Loss of power",
+  "Excessive smoking",
+  "Engine check light on",
+  "DPF light on",
+  "AdBlue light on",
+  "High fuel consumption",
+];
+
+const EFFECTS = [
+  "Premature engine failure",
+  "Premature turbo failure",
+  "Premature injector failure",
+  "Overheating and engine knock",
+];
 
 export default async function HomePage() {
   const supabase = await createClient();
@@ -48,7 +75,7 @@ export default async function HomePage() {
 
       {/* Services card */}
       <section className="bg-white">
-        <div className="mx-auto max-w-7xl px-5 pb-24 lg:px-8">
+        <div className="mx-auto max-w-7xl px-5 pb-12 lg:px-8">
           <div className="rounded-[2rem] bg-white p-7 shadow-sm md:p-10">
 
             {chunkArray(services, 4).map((row, rowIndex) => (
@@ -105,6 +132,84 @@ export default async function HomePage() {
                 </div>
               </div>
             ))}
+
+          </div>
+        </div>
+      </section>
+
+            {/* Commercial truck emission solutions */}
+      <section className="bg-white">
+        <div className="mx-auto max-w-7xl px-5 pb-24 lg:px-8">
+          <div className="rounded-[2rem] bg-white p-7 shadow-sm md:p-10">
+
+            <p className="text-xs font-semibold uppercase tracking-wider text-orange-500">
+              For commercial trucks
+            </p>
+            <h2 className="mt-2 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+              DPF, AdBlue and EGR delete
+            </h2>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-steel-500">
+              A permanent solution for commercial trucks with DPF, AdBlue or
+              EGR problems.
+            </p>
+
+            <div className="mt-10 grid gap-10 md:grid-cols-3">
+
+              <div>
+                <h3 className="font-display font-semibold">Benefits</h3>
+                <ul className="mt-4 space-y-3">
+                  {BENEFITS.map((item) => (
+                    <li
+                      key={item}
+                      className="flex gap-3 text-sm leading-6 text-steel-500"
+                    >
+                      <Check
+                        size={16}
+                        className="mt-1 shrink-0 text-orange-500"
+                      />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="font-display font-semibold">
+                  Signs and symptoms of failure
+                </h3>
+                <ul className="mt-4 space-y-3">
+                  {SYMPTOMS.map((item) => (
+                    <li
+                      key={item}
+                      className="flex gap-3 text-sm leading-6 text-steel-500"
+                    >
+                      <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-orange-500" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="font-display font-semibold">
+                  Effects of failure
+                </h3>
+                <ul className="mt-4 space-y-3">
+                  {EFFECTS.map((item) => (
+                    <li
+                      key={item}
+                      className="flex gap-3 text-sm leading-6 text-steel-500"
+                    >
+                      <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-steel-500" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+            </div>
+
+            
 
           </div>
         </div>
