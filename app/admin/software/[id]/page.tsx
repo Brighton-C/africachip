@@ -1,7 +1,15 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { updateSoftware, deleteSoftware } from "@/lib/actions/admin-software";
 import { requireOwnerPage } from "@/lib/requireOwner";
 import { notFound } from "next/navigation";
+import {
+  eyebrowClass,
+  adminTitleClass,
+  labelClass,
+  inputClass,
+  primaryButtonClass,
+} from "@/lib/ui";
 
 export default async function EditSoftwarePage({
   params,
@@ -16,54 +24,84 @@ export default async function EditSoftwarePage({
   if (!product) notFound();
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-12">
-      <h1 className="font-display font-bold text-2xl mb-6">Edit Software</h1>
-
-      <form
-        action={updateSoftware}
-        className="space-y-4 bg-white border border-steel-500/10 rounded-xl p-6"
+    <div className="container-page pb-24 pt-12 md:pt-16">
+      <Link
+        href="/admin/software"
+        className={`${eyebrowClass} transition-opacity hover:opacity-60`}
       >
-        <input type="hidden" name="id" value={product.id} />
-        <input
-          name="name"
-          defaultValue={product.name}
-          required
-          className="w-full border border-steel-500/20 rounded px-3 py-2 text-sm"
-        />
-        <textarea
-          name="description"
-          defaultValue={product.description ?? ""}
-          className="w-full border border-steel-500/20 rounded px-3 py-2 text-sm"
-        />
-        <input
-          name="price"
-          type="number"
-          step="0.01"
-          defaultValue={product.price?.toString() ?? ""}
-          className="w-full border border-steel-500/20 rounded px-3 py-2 text-sm"
-        />
-        <label className="flex items-center gap-2 text-sm">
-          <input
-            type="checkbox"
-            name="active"
-            defaultChecked={product.active}
-          />
-          Show on the website
-        </label>
-        <button
-          type="submit"
-          className="bg-orange-500 text-white rounded px-6 py-2 text-sm font-medium hover:bg-orange-500/90"
-        >
-          Save Changes
-        </button>
-      </form>
+        ← Software
+      </Link>
+      <h1 className={adminTitleClass}>Edit software</h1>
 
-      <form action={deleteSoftware} className="mt-4">
-        <input type="hidden" name="id" value={product.id} />
-        <button type="submit" className="text-red-600 text-sm underline">
-          Delete this software
-        </button>
-      </form>
+      <div className="mt-10 max-w-xl border-t border-fog-200 pt-10">
+        <form action={updateSoftware} className="space-y-5">
+          <input type="hidden" name="id" value={product.id} />
+
+          <div>
+            <label htmlFor="name" className={labelClass}>
+              Name
+            </label>
+            <input
+              id="name"
+              name="name"
+              defaultValue={product.name}
+              required
+              className={inputClass}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="description" className={labelClass}>
+              Description
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              defaultValue={product.description ?? ""}
+              rows={4}
+              className={`${inputClass} resize-none`}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="price" className={labelClass}>
+              Price
+            </label>
+            <input
+              id="price"
+              name="price"
+              type="number"
+              step="0.01"
+              defaultValue={product.price?.toString() ?? ""}
+              className={inputClass}
+            />
+          </div>
+
+          <label className="flex items-center gap-3 text-sm text-navy-950">
+            <input
+              type="checkbox"
+              name="active"
+              defaultChecked={product.active}
+              className="h-4 w-4 accent-navy-950"
+            />
+            Show on the website
+          </label>
+
+          <button type="submit" className={primaryButtonClass}>
+            Save changes
+          </button>
+        </form>
+
+        <form action={deleteSoftware} className="mt-10 border-t border-fog-200 pt-6">
+          <input type="hidden" name="id" value={product.id} />
+          <button
+            type="submit"
+            className="text-sm text-red-600 underline underline-offset-4 transition-opacity hover:opacity-60"
+          >
+            Delete this software
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

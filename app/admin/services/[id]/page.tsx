@@ -1,6 +1,14 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { updateService, deleteService } from "@/lib/actions/admin-service";
 import { notFound } from "next/navigation";
+import {
+  eyebrowClass,
+  adminTitleClass,
+  labelClass,
+  inputClass,
+  primaryButtonClass,
+} from "@/lib/ui";
 
 export default async function EditServicePage({
   params,
@@ -13,46 +21,74 @@ export default async function EditServicePage({
   if (!service) notFound();
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-12">
-      <h1 className="font-display font-bold text-2xl mb-6">Edit Service</h1>
-
-      <form
-        action={updateService}
-        className="space-y-4 bg-white border border-steel-500/10 rounded-xl p-6"
+    <div className="container-page pb-24 pt-12 md:pt-16">
+      <Link
+        href="/admin/services"
+        className={`${eyebrowClass} transition-opacity hover:opacity-60`}
       >
-        <input type="hidden" name="id" value={service.id} />
-        <input
-          name="name"
-          defaultValue={service.name}
-          required
-          className="w-full border border-steel-500/20 rounded px-3 py-2 text-sm"
-        />
-        <textarea
-          name="description"
-          defaultValue={service.description ?? ""}
-          className="w-full border border-steel-500/20 rounded px-3 py-2 text-sm"
-        />
-        <input
-          name="price"
-          type="number"
-          step="0.01"
-          defaultValue={service.price?.toString() ?? ""}
-          className="w-full border border-steel-500/20 rounded px-3 py-2 text-sm"
-        />
-        <button
-          type="submit"
-          className="bg-orange-500 text-white rounded px-6 py-2 text-sm font-medium hover:bg-orange-500/90"
-        >
-          Save Changes
-        </button>
-      </form>
+        ← Services
+      </Link>
+      <h1 className={adminTitleClass}>Edit service</h1>
 
-      <form action={deleteService} className="mt-4">
-        <input type="hidden" name="id" value={service.id} />
-        <button type="submit" className="text-red-600 text-sm underline">
-          Delete this service
-        </button>
-      </form>
+      <div className="mt-10 max-w-xl border-t border-fog-200 pt-10">
+        <form action={updateService} className="space-y-5">
+          <input type="hidden" name="id" value={service.id} />
+
+          <div>
+            <label htmlFor="name" className={labelClass}>
+              Name
+            </label>
+            <input
+              id="name"
+              name="name"
+              defaultValue={service.name}
+              required
+              className={inputClass}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="description" className={labelClass}>
+              Description
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              defaultValue={service.description ?? ""}
+              rows={4}
+              className={`${inputClass} resize-none`}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="price" className={labelClass}>
+              Price
+            </label>
+            <input
+              id="price"
+              name="price"
+              type="number"
+              step="0.01"
+              defaultValue={service.price?.toString() ?? ""}
+              className={inputClass}
+            />
+          </div>
+
+          <button type="submit" className={primaryButtonClass}>
+            Save changes
+          </button>
+        </form>
+
+        <form action={deleteService} className="mt-10 border-t border-fog-200 pt-6">
+          <input type="hidden" name="id" value={service.id} />
+          <button
+            type="submit"
+            className="text-sm text-red-600 underline underline-offset-4 transition-opacity hover:opacity-60"
+          >
+            Delete this service
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

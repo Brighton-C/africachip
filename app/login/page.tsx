@@ -4,6 +4,13 @@ import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import {
+  eyebrowClass,
+  adminTitleClass,
+  labelClass,
+  inputClass,
+  primaryButtonClass,
+} from "@/lib/ui";
 
 function LoginForm() {
   const router = useRouter();
@@ -38,51 +45,77 @@ function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleLogin} className="max-w-sm mx-auto mt-12 space-y-4">
-      <h1 className="text-xl font-semibold">Log in</h1>
+    <div className="container-page pb-24 pt-16 md:pt-24">
+      <p className={eyebrowClass}>Account</p>
+      <h1 className={adminTitleClass}>Log in</h1>
 
-      {resetSuccess && (
-        <p className="text-green-700 text-sm bg-green-50 rounded px-3 py-2">
-          Your password has been updated. Please log in.
-        </p>
-      )}
-
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-        className="w-full border rounded px-3 py-2"
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-        className="w-full border rounded px-3 py-2"
-      />
-
-      <div className="text-right -mt-2">
-        <Link
-          href="/forgot-password"
-          className="text-sm underline text-gray-600"
-        >
-          Forgot password?
-        </Link>
-      </div>
-
-      {error && <p className="text-red-600 text-sm">{error}</p>}
-
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full bg-black text-white rounded py-2 disabled:opacity-50"
+      <form
+        onSubmit={handleLogin}
+        className="mt-10 max-w-sm space-y-5 border-t border-fog-200 pt-10"
       >
-        {loading ? "Logging in..." : "Log in"}
-      </button>
-    </form>
+        {resetSuccess && (
+          <p className="border border-fog-200 bg-fog-100 px-4 py-3 text-sm text-navy-950">
+            Your password has been updated. Please log in.
+          </p>
+        )}
+
+        <div>
+          <label htmlFor="email" className={labelClass}>
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className={inputClass}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="password" className={labelClass}>
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className={inputClass}
+          />
+          <div className="mt-2 text-right">
+            <Link
+              href="/forgot-password"
+              className="text-sm text-steel-500 underline underline-offset-4 transition-opacity hover:opacity-60"
+            >
+              Forgot password?
+            </Link>
+          </div>
+        </div>
+
+        {error && <p className="text-sm text-red-600">{error}</p>}
+
+        <button
+          type="submit"
+          disabled={loading}
+          className={`${primaryButtonClass} w-full disabled:opacity-50`}
+        >
+          {loading ? "Logging in..." : "Log in"}
+        </button>
+
+        <p className="text-sm text-steel-500">
+          No account yet?{" "}
+          <Link
+            href="/signup"
+            className="text-navy-950 underline underline-offset-4 transition-opacity hover:opacity-60"
+          >
+            Sign up
+          </Link>
+        </p>
+      </form>
+    </div>
   );
 }
 

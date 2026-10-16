@@ -1,12 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import StatusSelect from "./StatusSelect";
-
+import { eyebrowClass, adminTitleClass } from "@/lib/ui";
 
 const STATUS_LABELS: Record<string, string> = {
   pending: "Pending",
   confirmed: "Confirmed",
-  in_progress: "In Progress",
+  in_progress: "In progress",
   completed: "Completed",
 };
 
@@ -24,61 +24,74 @@ export default async function AdminBookingsPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10">
-      <h1 className="font-display font-bold text-2xl mb-6">Bookings</h1>
+    <div className="container-page pb-24 pt-12 md:pt-16">
+      <p className={eyebrowClass}>Admin</p>
+      <h1 className={adminTitleClass}>Bookings</h1>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      {/* Counts */}
+      <div className="mt-10 grid grid-cols-2 gap-8 border-t border-fog-200 pt-8 md:grid-cols-4">
         {Object.entries(counts).map(([key, value]) => (
-          <div
-            key={key}
-            className="bg-white rounded-xl border border-steel-500/10 p-4"
-          >
-            <p className="font-display font-bold text-2xl text-navy-950">
+          <div key={key}>
+            <p className="font-display text-5xl font-normal leading-none tracking-[-0.04em] text-navy-950 lg:text-6xl">
               {value}
             </p>
-            <p className="text-xs text-steel-500 mt-1">
+            <p className="mt-3 text-xs uppercase tracking-widest text-steel-500">
               {STATUS_LABELS[key]}
             </p>
           </div>
         ))}
       </div>
 
-      <div className="space-y-3">
+      {/* List */}
+      <div className="mt-12 border-t border-fog-200">
         {bookings.map((booking) => (
-          <div
-            key={booking.id}
-            className="bg-white rounded-2xl border border-steel-500/10 p-5 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <div className="flex justify-between items-start gap-4">
+          <div key={booking.id} className="border-b border-fog-200 py-7">
+            <div className="flex items-start justify-between gap-6">
               <div className="flex-1">
-                <p className="font-display font-semibold mb-2">
+                <h2 className="font-display text-lg font-normal">
                   {booking.service.name}
-                </p>
+                </h2>
 
-                                <div className="grid sm:grid-cols-2 gap-x-6 gap-y-1 text-sm text-steel-500">
-                  <p>
-                    <span className="font-medium text-navy-950">Customer:</span>{" "}
-                    {booking.customer.name} — {booking.customer.phone}
-                  </p>
-                  <p>
-                    <span className="font-medium text-navy-950">Vehicle:</span>{" "}
-                    {booking.vehicle.make} {booking.vehicle.model} (
-                    {booking.vehicle.year})
-                  </p>
-                  <p>
-                    <span className="font-medium text-navy-950">Date:</span>{" "}
-                    {booking.preferredDate.toLocaleDateString()}
-                  </p>
-                  <p>
-                    <span className="font-medium text-navy-950">Location:</span>{" "}
-                    {booking.locationType === "workshop"
-                      ? "Workshop"
-                      : `Customer location${booking.address ? `: ${booking.address}` : ""}`}
-                  </p>
-                </div>
+                <dl className="mt-5 grid gap-x-10 gap-y-4 sm:grid-cols-2">
+                  <div>
+                    <dt className="text-xs uppercase tracking-widest text-steel-500">
+                      Customer
+                    </dt>
+                    <dd className="mt-1 text-sm text-navy-950">
+                      {booking.customer.name} · {booking.customer.phone}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs uppercase tracking-widest text-steel-500">
+                      Vehicle
+                    </dt>
+                    <dd className="mt-1 text-sm text-navy-950">
+                      {booking.vehicle.make} {booking.vehicle.model} (
+                      {booking.vehicle.year})
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs uppercase tracking-widest text-steel-500">
+                      Date
+                    </dt>
+                    <dd className="mt-1 text-sm text-navy-950">
+                      {booking.preferredDate.toLocaleDateString()}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs uppercase tracking-widest text-steel-500">
+                      Location
+                    </dt>
+                    <dd className="mt-1 text-sm text-navy-950">
+                      {booking.locationType === "workshop"
+                        ? "Workshop"
+                        : `Customer location${booking.address ? `: ${booking.address}` : ""}`}
+                    </dd>
+                  </div>
+                </dl>
 
                 {booking.notes && (
-                  <p className="text-sm text-steel-500 mt-2 italic">
+                  <p className="mt-5 max-w-xl text-sm leading-6 text-steel-500">
                     &quot;{booking.notes}&quot;
                   </p>
                 )}
@@ -86,7 +99,7 @@ export default async function AdminBookingsPage() {
                 {booking.job && (
                   <Link
                     href={`/admin/jobs/${booking.job.id}`}
-                    className="text-xs font-medium text-orange-500 underline mt-2 inline-block"
+                    className="mt-5 inline-block text-sm font-medium text-navy-950 underline underline-offset-4 transition-opacity hover:opacity-60"
                   >
                     Open job →
                   </Link>

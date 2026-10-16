@@ -1,17 +1,31 @@
-import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { getServiceCategory } from "@/lib/serviceCategory";
 import { createClient } from "@/lib/supabase/server";
+import Hero from "@/components/Hero";
+import ScrollReveal from "@/components/ScrollReveal";
 
-function chunkArray<T>(arr: T[], size: number): T[][] {
-  const chunks: T[][] = [];
-  for (let i = 0; i < arr.length; i += size) {
-    chunks.push(arr.slice(i, i + size));
-  }
-  return chunks;
-}
+const STEPS = [
+  {
+    number: "01",
+    title: "Tell us about your vehicle",
+    description:
+      "Choose your service and provide the basic details about your vehicle.",
+  },
+  {
+    number: "02",
+    title: "Choose where",
+    description:
+      "Bring your vehicle to our workshop or arrange a service at your location.",
+  },
+  {
+    number: "03",
+    title: "We handle the rest",
+    description:
+      "Our team carries out the service and keeps you informed throughout the job.",
+  },
+];
 
 export default async function HomePage() {
   const supabase = await createClient();
@@ -24,224 +38,152 @@ export default async function HomePage() {
     orderBy: { createdAt: "asc" },
   });
 
+  const panelServices = services.slice(0, 6).map((service) => ({
+    id: service.id,
+    name: service.name,
+    label: getServiceCategory(service.name).label,
+  }));
+
   return (
-    <main className="min-h-screen bg-fog-100 text-navy-950">
+    <main className="bg-navy-950 text-white">
+      <ScrollReveal />
 
-      {/* -------------------------------------------------- */}
-      {/* HERO — card */}
-      {/* -------------------------------------------------- */}
+      <Hero bookHref={bookHref} services={panelServices} />
 
-      <section className="bg-white">
+      {/* Everything below slides over the pinned hero */}
+      <div
+        id="home-cover"
+        className="relative z-10 shadow-[0_-30px_60px_-20px_rgba(0,0,0,0.6)]"
+      >
 
-        <div className="mx-auto max-w-7xl px-5 pb-10 pt-6 md:pb-12 md:pt-8 lg:px-8">
+        {/* SERVICES */}
+        <section className="border-t border-white/10 bg-graphite-900">
+          <div className="container-page grid gap-12 py-20 md:py-28 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
 
-          <div className="relative overflow-hidden rounded-[2rem] bg-orange-500/10 p-7 shadow-sm md:min-h-[520px] md:p-10">
-
-            <div className="relative z-20 max-w-xl">
-
-              <h1 className="font-display text-3xl leading-[1.05] tracking-tight text-navy-950 sm:text-4xl md:mt-5 md:text-5xl lg:text-6xl">
-                ECU performance
-                <br />
-                <span className="text-steel-500">
-                  & diagnostics
-                </span>
-              </h1>
-
-              <p className="mt-5 max-w-md text-sm leading-6 text-steel-500 md:text-base">
-                Professional vehicle tuning, diagnostics and ECU services
-                at our workshop or at your location.
-              </p>
-
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <Link
-                  href={bookHref}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-navy-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-navy-950/90"
-                >
-                  Book a service
-                  <ArrowRight size={16} />
-                </Link>
-
-                <Link
-                  href="/services"
-                  className="rounded-xl border border-steel-500/15 bg-fog-100 px-5 py-3 text-center text-sm font-medium text-navy-950 transition hover:bg-fog-100/70"
-                >
-                  Explore services
-                </Link>
-              </div>
-
-            </div>
-
-                        {/* Vehicle image: hidden on phones, shown from tablet (md) up */}
-            <div className="hidden md:block absolute bottom-0 right-0 z-10 w-[62%] lg:top-0 lg:w-[65%]">
-              <div className="absolute inset-0 -z-10 rounded-full bg-orange-500/10 blur-3xl" />
-
-              <Image
-                src="/images/truck3.png"
-                alt="Vehicle serviced by AfricaChip"
-                width={1024}
-                height={1024}
-                sizes="(min-width: 1024px) 65vw, 62vw"
-                className="h-auto w-full object-contain"
-              />
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      {/* -------------------------------------------------- */}
-      {/* SERVICES — card, same pattern as hero */}
-      {/* -------------------------------------------------- */}
-
-      <section className="bg-white">
-
-        <div className="mx-auto max-w-7xl px-5 pb-10 md:pb-12 lg:px-8">
-
-          <div className="rounded-[2rem] bg-white p-7 shadow-sm md:p-10">
-
-            <div className="mb-10 md:mb-14">
-              <p className="text-xs font-semibold uppercase tracking-wider text-orange-500">
+            <div className="lg:sticky lg:top-24 lg:self-start">
+              <p
+                data-reveal
+                className="text-xs font-medium uppercase tracking-widest text-white/50"
+              >
                 What we do
               </p>
-              <h2 className="mt-2 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+              <h2
+                data-reveal
+                className="mt-4 font-display text-4xl font-normal leading-[1.02] tracking-[-0.035em] md:text-5xl lg:text-6xl"
+              >
                 Our services
               </h2>
+              <p
+                data-reveal
+                className="mt-5 max-w-sm text-base leading-7 text-white/55"
+              >
+                ECU tuning, diagnostics, programming and repairs for cars and
+                trucks.
+              </p>
+              <Link
+                data-reveal
+                href="/services"
+                className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-white/80 transition hover:text-white"
+              >
+                View all services
+                <ArrowUpRight size={16} />
+              </Link>
             </div>
 
-            {chunkArray(services, 4).map((row, rowIndex) => (
-              <div key={rowIndex} className="relative mb-8 last:mb-0 md:mb-14">
+            <div data-stagger className="border-t border-white/10">
+              {services.map((service, i) => {
+                const category = getServiceCategory(service.name);
 
-                {row.length > 1 && (
-                  <div className="hidden md:block absolute top-6 left-[12.5%] right-[12.5%] h-px bg-steel-500/20" />
-                )}
-
-                <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 md:grid-cols-4 md:gap-y-10">
-                  {row.map((service, i) => {
-                    const category = getServiceCategory(service.name);
-                    const Icon = category.icon;
-                    const globalIndex = rowIndex * 4 + i;
-
-                    return (
-                      <div
-                        key={service.id}
-                        className="relative flex gap-4 md:block"
-                      >
-                        <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-steel-500/20 bg-white">
-                          <Icon size={20} className="text-steel-500" />
-                        </div>
-
-                        <div className="md:mt-4">
-                          <p className="text-xs font-semibold uppercase tracking-wide text-steel-500">
-                            {String(globalIndex + 1).padStart(2, "0")}{" "}
-                            {category.label}
-                          </p>
-
-                          <h3 className="mt-1 font-display font-semibold">
-                            {service.name}
-                          </h3>
-
-                          <p className="mt-1 text-sm leading-6 text-steel-500">
-                            {service.description}
-                          </p>
-
-                          <Link
-                            href={bookHref}
-                            className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-orange-500"
-                          >
-                            Book this service
-                            <ArrowRight size={13} />
-                          </Link>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
+                return (
+                  <Link
+                    key={service.id}
+                    data-stagger-item
+                    href={bookHref}
+                    className="group grid grid-cols-[2.5rem_1fr_auto] items-start gap-x-4 border-b border-white/10 py-6 transition-colors hover:bg-white/[0.03] md:grid-cols-[3.5rem_1fr_auto]"
+                  >
+                    <span className="pt-1.5 text-xs tabular-nums text-white/40">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <h3 className="font-display text-xl font-normal tracking-tight md:text-2xl">
+                        {service.name}
+                      </h3>
+                      <p className="mt-2 max-w-md text-sm leading-6 text-white/55">
+                        {service.description}
+                      </p>
+                    </div>
+                    <div className="flex flex-col items-end gap-3">
+                      <span className="text-xs text-white/40">
+                        {category.label}
+                      </span>
+                      <ArrowUpRight
+                        size={18}
+                        className="text-white/40 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white"
+                      />
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
 
           </div>
+        </section>
 
-        </div>
+        {/* HOW IT WORKS */}
+        <section className="bg-white text-navy-950">
+          <div className="container-page py-20 md:py-28">
 
-      </section>
-
-
-      {/* -------------------------------------------------- */}
-      {/* HOW IT WORKS — card, same pattern, interactive steps */}
-      {/* -------------------------------------------------- */}
-
-      <section className="bg-fog-100">
-
-        <div className="mx-auto max-w-7xl px-5 py-10 md:py-16 lg:px-8">
-
-          <div className="rounded-[2rem] bg-white p-7 shadow-sm md:p-10">
-
-            <div className="max-w-xl">
-              <p className="text-xs font-semibold uppercase tracking-wider text-orange-500">
+            <div className="max-w-2xl">
+              <p
+                data-reveal
+                className="text-xs font-medium uppercase tracking-widest text-steel-500"
+              >
                 Simple process
               </p>
-              <h2 className="mt-2 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+              <h2
+                data-reveal
+                className="mt-4 font-display text-4xl font-normal leading-[1.02] tracking-[-0.035em] md:text-5xl lg:text-6xl"
+              >
                 Get your vehicle serviced
               </h2>
-              <p className="mt-3 text-sm leading-6 text-steel-500">
+              <p
+                data-reveal
+                className="mt-5 max-w-md text-base leading-7 text-steel-500"
+              >
                 From booking to completion, we keep the process
                 straightforward.
               </p>
             </div>
 
-            <div className="relative mt-10 md:mt-14">
-              <div className="hidden md:block absolute top-6 left-[16.67%] right-[16.67%] h-px bg-steel-500/20" />
-
-              <div className="grid gap-8 md:grid-cols-3 md:gap-10">
-                {[
-                  {
-                    number: "01",
-                    title: "Tell us about your vehicle",
-                    description:
-                      "Choose your service and provide the basic details about your vehicle.",
-                  },
-                  {
-                    number: "02",
-                    title: "Choose where",
-                    description:
-                      "Bring your vehicle to our workshop or arrange a service at your location.",
-                  },
-                  {
-                    number: "03",
-                    title: "We handle the rest",
-                    description:
-                      "Our team carries out the service and keeps you informed throughout the job.",
-                  },
-                ].map((step) => (
-                  <div
-                    key={step.number}
-                    className="group relative flex gap-4 md:block"
-                  >
-                    <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-steel-500/20 bg-white font-display font-bold text-steel-500 transition-all duration-300 group-hover:scale-110 group-hover:bg-orange-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-orange-500/30">
+            <div className="mt-16 md:mt-24">
+              <div
+                data-line
+                className="mb-10 h-px w-full origin-left bg-navy-950/15"
+              />
+              <div
+                data-stagger
+                className="grid gap-12 md:grid-cols-3 md:gap-10"
+              >
+                {STEPS.map((step) => (
+                  <div key={step.number} data-stagger-item>
+                    <span className="font-display text-6xl font-light tracking-tight text-steel-300 md:text-7xl">
                       {step.number}
-                    </div>
-                    <div className="pt-2 md:mt-5 md:pt-0">
-                      <h3 className="font-display text-lg font-semibold transition-colors duration-300 group-hover:text-orange-500">
-                        {step.title}
-                      </h3>
-                      <p className="mt-2 text-sm leading-6 text-steel-500">
-                        {step.description}
-                      </p>
-                    </div>
+                    </span>
+                    <h3 className="mt-6 font-display text-xl font-normal tracking-tight">
+                      {step.title}
+                    </h3>
+                    <p className="mt-2 max-w-xs text-sm leading-6 text-steel-500">
+                      {step.description}
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
 
           </div>
+        </section>
 
-        </div>
-
-      </section>
-
+      </div>
     </main>
   );
 }

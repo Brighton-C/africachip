@@ -5,6 +5,13 @@ import { createStaffAccount, setAccountActive } from "@/lib/actions/team";
 import RoleSelect from "@/components/admin/RoleSelect";
 import { ROLE_LABELS } from "@/lib/roleLabels";
 import { Role } from "@prisma/client";
+import {
+  eyebrowClass,
+  adminTitleClass,
+  sectionTitleClass,
+  inputClass,
+  primaryButtonClass,
+} from "@/lib/ui";
 
 const OWNER_ROLES: Role[] = ["superadmin", "owner"];
 const HIGH_PRIVILEGE_ROLES: Role[] = ["superadmin", "owner"];
@@ -41,19 +48,22 @@ export default async function TeamPage({
   const isSuperadmin = viewer.role === "superadmin";
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-12">
-      <h1 className="font-display font-bold text-2xl mb-6">Team</h1>
+    <div className="container-page pb-24 pt-12 md:pt-16">
+      <p className={eyebrowClass}>Admin</p>
+      <h1 className={adminTitleClass}>Team</h1>
 
       {created && temp && (
-        <div className="mb-8 rounded-xl border border-orange-500/30 bg-orange-50 p-4 text-sm">
-          <p className="font-medium">Account created for {created}</p>
-          <p className="mt-1 text-steel-500">
+        <div className="mt-10 max-w-3xl border border-fog-200 bg-fog-100 p-5 text-sm">
+          <p className="font-medium text-navy-950">
+            Account created for {created}
+          </p>
+          <p className="mt-2 text-steel-500">
             Temporary password:{" "}
             <span className="font-mono font-semibold text-navy-950">
               {temp}
             </span>
           </p>
-          <p className="mt-1 text-steel-500">
+          <p className="mt-2 leading-6 text-steel-500">
             Share this with them directly. They should log in and use
             &quot;Forgot password?&quot; to set their own password. This
             won&apos;t be shown again.
@@ -61,7 +71,7 @@ export default async function TeamPage({
         </div>
       )}
 
-      <div className="space-y-3 mb-12">
+      <div className="mt-10 max-w-3xl border-t border-fog-200">
         {staff.map((member) => {
           const targetIsHighPrivilege = HIGH_PRIVILEGE_ROLES.includes(
             member.role
@@ -73,27 +83,25 @@ export default async function TeamPage({
           return (
             <div
               key={member.id}
-              className="flex items-center justify-between border border-steel-500/10 rounded-xl p-4 bg-white"
+              className="flex flex-wrap items-center justify-between gap-4 border-b border-fog-200 py-5"
             >
               <div>
-                <p className="font-display font-semibold">
+                <p className="font-display text-lg font-normal">
                   {member.name}{" "}
                   {!member.active && (
-                    <span className="text-xs font-normal text-red-600">
-                      (deactivated)
-                    </span>
+                    <span className="text-xs text-red-600">(deactivated)</span>
                   )}
                 </p>
-                <p className="text-sm text-steel-500">{member.email}</p>
+                <p className="mt-1 text-sm text-steel-500">{member.email}</p>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-5">
                 {isSuperadmin && !isSelf ? (
                   <RoleSelect userId={member.id} currentRole={member.role} />
                 ) : (
                   <span className="text-sm text-steel-500">
-  {ROLE_LABELS[member.role]}
-</span>
+                    {ROLE_LABELS[member.role]}
+                  </span>
                 )}
 
                 {canDeactivate && (
@@ -106,7 +114,7 @@ export default async function TeamPage({
                     />
                     <button
                       type="submit"
-                      className="text-sm underline text-red-600"
+                      className="text-sm text-red-600 underline underline-offset-4 transition-opacity hover:opacity-60"
                     >
                       {member.active ? "Deactivate" : "Reactivate"}
                     </button>
@@ -118,50 +126,44 @@ export default async function TeamPage({
         })}
       </div>
 
-      <h2 className="font-display font-semibold text-lg mb-4">
-        Add a staff account
-      </h2>
-      <form
-        action={createStaffAccount}
-        className="space-y-4 bg-white border border-steel-500/10 rounded-xl p-6 max-w-md"
-      >
-        <input
-          name="name"
-          placeholder="Full name"
-          required
-          className="w-full border border-steel-500/20 rounded px-3 py-2 text-sm"
-        />
-        <input
-          name="email"
-          type="email"
-          placeholder="Email"
-          required
-          className="w-full border border-steel-500/20 rounded px-3 py-2 text-sm"
-        />
+      <div className="mt-16 max-w-xl">
+        <h2 className={sectionTitleClass}>Add a staff account</h2>
+        <form action={createStaffAccount} className="mt-8 space-y-4">
+          <input
+            name="name"
+            placeholder="Full name"
+            required
+            className={inputClass}
+          />
+          <input
+            name="email"
+            type="email"
+            placeholder="Email"
+            required
+            className={inputClass}
+          />
 
-        {isSuperadmin ? (
-          <select
-            name="role"
-            defaultValue="dispatcher"
-            className="w-full border border-steel-500/20 rounded px-3 py-2 text-sm"
-          >
-            <option value="dispatcher">Dispatcher</option>
-            <option value="owner">Owner</option>
-            <option value="superadmin">System Admin</option>
-          </select>
-        ) : (
-          <p className="text-sm text-steel-500">
-            New accounts are created as Dispatcher.
-          </p>
-        )}
+          {isSuperadmin ? (
+            <select
+              name="role"
+              defaultValue="dispatcher"
+              className={inputClass}
+            >
+              <option value="dispatcher">Dispatcher</option>
+              <option value="owner">Owner</option>
+              <option value="superadmin">System Admin</option>
+            </select>
+          ) : (
+            <p className="text-sm text-steel-500">
+              New accounts are created as Dispatcher.
+            </p>
+          )}
 
-        <button
-          type="submit"
-          className="bg-orange-500 text-white rounded px-6 py-2 text-sm font-medium hover:bg-orange-500/90"
-        >
-          Create Account
-        </button>
-      </form>
+          <button type="submit" className={primaryButtonClass}>
+            Create account
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
