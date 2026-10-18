@@ -39,6 +39,10 @@ export default async function AccountPage() {
         {vehicleCount} vehicle{vehicleCount === 1 ? "" : "s"} on file
       </p>
 
+      <Link href="/account/profile" className="mt-4 inline-block text-xs font-medium text-accent underline">
+  Edit my details
+</Link>
+
       {/* Actions */}
       <div className="mt-12 grid gap-x-8 gap-y-10 border-t border-fog-200 pt-10 sm:grid-cols-2">
         <Link href="/account/vehicles" className="group block max-w-sm">
