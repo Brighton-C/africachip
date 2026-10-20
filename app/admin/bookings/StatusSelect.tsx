@@ -36,7 +36,7 @@ export default function StatusSelect({
         setStatus(e.target.value);
         updateBookingStatus(bookingId, e.target.value);
       }}
-      className={`keep-round cursor-pointer rounded-full border px-4 py-1.5 text-xs font-medium focus:outline-none [&>option]:bg-white [&>option]:text-navy-950 ${STATUS_STYLES[status]}`}
+      className={` cursor-pointer  border px-4 py-1.5 text-xs font-medium focus:outline-none [&>option]:bg-white [&>option]:text-navy-950 ${STATUS_STYLES[status]}`}
     >
       {STATUSES.map((s) => (
         <option key={s} value={s}>
