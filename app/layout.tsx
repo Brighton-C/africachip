@@ -35,7 +35,9 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image" },
   // Paste the token from Search Console here (step 2 below).
-  verification: { google: <meta name="google-site-verification" content="0Z1VhD9zuO1eZP8WoZcztrU3emNmYVB8JAvhFaZpyGo" /> },
+  verification: {
+  google: "0Z1VhD9zuO1eZP8WoZcztrU3emNmYVB8JAvhFaZpyGo",
+},
   
 };
 
