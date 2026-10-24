@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Inter, Inter_Tight } from "next/font/google";
+import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -8,8 +9,14 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { SITE_URL } from "@/lib/contact";
 
 // To change the site fonts, swap these two. The mapping lives in globals.css.
-const displayFont = Inter_Tight({
-  subsets: ["latin"],
+const displayFont = localFont({
+  src: [
+    {
+      path: "./fonts/Lufga Regular.otf",
+      weight: "400",
+      style: "normal",
+    },
+  ],
   variable: "--font-display-loaded",
   display: "swap",
 });
@@ -33,12 +40,12 @@ export const metadata: Metadata = {
     siteName: "AfricaChip",
     locale: "en_ZW",
   },
-  twitter: { card: "summary_large_image" },
-  // Paste the token from Search Console here (step 2 below).
+  twitter: {
+    card: "summary_large_image",
+  },
   verification: {
-  google: "0Z1VhD9zuO1eZP8WoZcztrU3emNmYVB8JAvhFaZpyGo",
-},
-  
+    google: "0Z1VhD9zuO1eZP8WoZcztrU3emNmYVB8JAvhFaZpyGo",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
