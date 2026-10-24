@@ -2,11 +2,19 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { WHATSAPP_NUMBER } from "@/lib/contact";
 import { eyebrowClass, pageTitleClass } from "@/lib/ui";
+import type { Metadata } from "next";
 
 function enquiryHref(name: string) {
   const text = `Hi, I would like to enquire about ${name}.`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 }
+
+export const metadata: Metadata = {
+  title: "Software",
+  description:
+    "Vehicle software available through AfricaChip. Enquire on WhatsApp about a product, its price or compatibility.",
+  alternates: { canonical: "/software" },
+};
 
 export default async function SoftwarePage() {
   const products = await prisma.software.findMany({

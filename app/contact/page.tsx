@@ -1,9 +1,17 @@
 import Link from "next/link";
 import { MapPin, Phone, Mail, Send } from "lucide-react";
 import { submitContactForm } from "@/lib/actions/contact";
+import type { Metadata } from "next";
 
 const inputClass =
   "w-full border border-fog-200 bg-white px-4 py-3 text-sm text-navy-950 placeholder:text-steel-400 transition-colors focus:border-navy-950 focus:outline-none";
+
+  export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Contact AfricaChip in Warren Park, Harare. Send a message or chat on WhatsApp.",
+  alternates: { canonical: "/contact" },
+};
 
 export default async function ContactPage({
   searchParams,

@@ -5,6 +5,14 @@ import { getServiceCategory } from "@/lib/serviceCategory";
 import { createClient } from "@/lib/supabase/server";
 
 import { WHATSAPP_NUMBER } from "@/lib/contact";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Services",
+  description:
+    "ECU remapping, Stage 1 to 3 tuning, diagnostics, DPF, AdBlue and EGR services, key programming and more for cars and trucks in Harare.",
+  alternates: { canonical: "/services" },
+};
 
 function chunkArray<T>(arr: T[], size: number): T[][] {
   const chunks: T[][] = [];

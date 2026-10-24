@@ -5,6 +5,33 @@ import { getServiceCategory } from "@/lib/serviceCategory";
 import { createClient } from "@/lib/supabase/server";
 import Hero from "@/components/Hero";
 import ScrollReveal from "@/components/ScrollReveal";
+import { SITE_URL } from "@/lib/contact";
+
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "AutoRepair",
+  name: "AfricaChip",
+  url: SITE_URL,
+  telephone: "+263771250250",
+  email: "admin@tamroexpress.co.zw",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Cnr Crowborough & Heany Rd, Warren Park D",
+    addressLocality: "Harare",
+    addressCountry: "ZW",
+  },
+  parentOrganization: {
+    "@type": "Organization",
+    name: "Tamro Express",
+    url: "https://tamroexpress.co.zw",
+  },
+};
 
 const STEPS = [
   {
@@ -44,8 +71,16 @@ export default async function HomePage() {
     label: getServiceCategory(service.name).label,
   }));
 
+
+
   return (
     <main className="bg-navy-950 text-white">
+      <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+  }}
+/>
       <ScrollReveal />
 
       <Hero bookHref={bookHref} services={panelServices} />
