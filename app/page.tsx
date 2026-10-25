@@ -54,6 +54,8 @@ const STEPS = [
   },
 ];
 
+const CTA_HEADLINE = "Tell us about your vehicle, we'll get it sorted.".split(" ");
+
 export default async function HomePage() {
   const supabase = await createClient();
   const {
@@ -210,6 +212,50 @@ export default async function HomePage() {
               </div>
             </div>
 
+          </div>
+        </section>
+                {/* CTA */}
+        <section className="border-t border-white/10 bg-navy-950 text-white">
+          <div className="container-page py-24 md:py-36">
+            <div
+              data-line
+              className="mb-12 h-px w-full origin-left bg-white/15"
+            />
+
+            <p
+              data-reveal
+              className="text-xs font-medium uppercase tracking-widest text-white/50"
+            >
+              Get in touch
+            </p>
+
+            <h2
+              data-words
+              className="mt-6 max-w-3xl font-display text-4xl font-normal leading-[1.02] tracking-[-0.02em] sm:text-5xl lg:text-7xl"
+            >
+              {CTA_HEADLINE.map((word, i) => (
+                <span key={i}>
+                  <span className="-mb-[0.15em] inline-block overflow-hidden pb-[0.15em] align-bottom">
+                    <span data-word className="inline-block">
+                      {word}
+                    </span>
+                  </span>{" "}
+                </span>
+              ))}
+            </h2>
+
+            <div data-reveal className="mt-10">
+              <Link
+                href={bookHref}
+                className="group inline-flex items-center gap-2 bg-white px-7 py-4 text-sm font-medium text-navy-950 transition hover:bg-white/90"
+              >
+                Book a service
+                <ArrowRight
+                  size={16}
+                  className="transition-transform group-hover:translate-x-1"
+                />
+              </Link>
+            </div>
           </div>
         </section>
 

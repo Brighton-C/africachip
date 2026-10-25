@@ -56,6 +56,21 @@ export default function ScrollReveal() {
           }
         );
       });
+
+      // NEW: headlines reveal word by word, each word sliding up out of a mask
+      gsap.utils.toArray<HTMLElement>("[data-words]").forEach((group) => {
+        gsap.fromTo(
+          group.querySelectorAll("[data-word]"),
+          { yPercent: 115 },
+          {
+            yPercent: 0,
+            duration: 1,
+            ease: "power4.out",
+            stagger: 0.07,
+            scrollTrigger: { trigger: group, start: "top 85%", once: true },
+          }
+        );
+      });
     });
 
     return () => mm.revert();
