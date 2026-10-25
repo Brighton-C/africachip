@@ -24,7 +24,7 @@ export default async function Navbar() {
   const isAdmin = !!role && ADMIN_ROLES.includes(role);
 
   return (
-    <nav className="relative z-40 border-b border-white/10 bg-graphite-700">
+    <nav className="sticky top-0 z-40 border-b border-white/10 bg-graphite-900">
       <div className="container-page py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center">
           <Image

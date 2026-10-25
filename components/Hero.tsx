@@ -80,7 +80,7 @@ export default function Hero({
         const st = () => ({
           trigger: cover,
           start: "top bottom",
-          end: "top top",
+          end: "top 73px",
           scrub: true,
         });
 
@@ -148,7 +148,7 @@ export default function Hero({
   return (
     <section
       ref={root}
-      className="sticky top-0 z-0 h-[calc(100svh-73px)] min-h-[560px] overflow-hidden bg-graphite-700 text-white"
+      className="sticky top-[73px] z-0 h-[calc(100svh-73px)] min-h-[560px] overflow-hidden bg-graphite-900 text-white"
     >
       {/* Vehicle (hidden while SHOW_VEHICLE is false). Sits behind the content. */}
       {SHOW_VEHICLE && (
@@ -245,7 +245,7 @@ export default function Hero({
               className="flex items-center justify-between px-5 py-4 text-sm font-medium text-white transition-colors hover:bg-white/5"
             >
               All services
-              <ArrowUpRight size={16} />
+              <ArrowRight size={16} />
             </Link>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { getServiceCategory } from "@/lib/serviceCategory";
 import { createClient } from "@/lib/supabase/server";
 import Hero from "@/components/Hero";
@@ -121,42 +121,37 @@ export default async function HomePage() {
                 className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-white/80 transition hover:text-white"
               >
                 View all services
-                <ArrowUpRight size={16} />
+                <ArrowRight size={16} />
               </Link>
             </div>
 
             <div data-stagger className="border-t border-white/10">
-              {services.map((service, i) => {
+              {services.map((service) => {
                 const category = getServiceCategory(service.name);
 
                 return (
-                  <Link
-                    key={service.id}
-                    data-stagger-item
-                    href={bookHref}
-                    className="group grid grid-cols-[2.5rem_1fr_auto] items-start gap-x-4 border-b border-white/10 py-6 transition-colors hover:bg-white/[0.03] md:grid-cols-[3.5rem_1fr_auto]"
-                  >
-                    <span className="pt-1.5 text-xs tabular-nums text-white/40">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <div>
-                      <h3 className="font-display text-xl font-normal tracking-tight md:text-2xl">
-                        {service.name}
-                      </h3>
-                      <p className="mt-2 max-w-md text-sm leading-6 text-white/55">
-                        {service.description}
-                      </p>
-                    </div>
-                    <div className="flex flex-col items-end gap-3">
-                      <span className="text-xs text-white/40">
-                        {category.label}
-                      </span>
-                      <ArrowUpRight
-                        size={18}
-                        className="text-white/40 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white"
-                      />
-                    </div>
-                  </Link>
+                 <Link
+  key={service.id}
+  data-stagger-item
+  href={bookHref}
+  className="group grid grid-cols-[1fr_auto] items-start gap-x-6 border-b border-white/10 py-6 transition-colors hover:bg-white/[0.03]"
+>
+  <div>
+    <h3 className="font-display text-xl font-normal tracking-tight md:text-2xl">
+      {service.name}
+    </h3>
+    <p className="mt-2 max-w-md text-sm leading-6 text-white/55">
+      {service.description}
+    </p>
+  </div>
+  <div className="flex flex-col items-end gap-3">
+    <span className="text-xs text-white/40">{category.label}</span>
+    <ArrowRight
+      size={18}
+      className="text-white/40 transition group-hover:translate-x-1 group-hover:text-white"
+    />
+  </div>
+</Link>
                 );
               })}
             </div>
