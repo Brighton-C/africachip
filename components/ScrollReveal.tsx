@@ -6,6 +6,8 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
+const PEEK = 120; // keep equal to the 120px in globals.css
+
 export default function ScrollReveal() {
   useGSAP(() => {
     const mm = gsap.matchMedia();
@@ -57,7 +59,7 @@ export default function ScrollReveal() {
         );
       });
 
-      // NEW: headlines reveal word by word, each word sliding up out of a mask
+      // Headlines reveal word by word
       gsap.utils.toArray<HTMLElement>("[data-words]").forEach((group) => {
         gsap.fromTo(
           group.querySelectorAll("[data-word]"),
@@ -72,6 +74,43 @@ export default function ScrollReveal() {
         );
       });
     });
+
+    // Stacked rows: each row slides over the one before it as the page scrolls.
+    // Same conditions as the CSS in globals.css.
+    mm.add(
+      "(min-width: 1024px) and (min-height: 800px) and (prefers-reduced-motion: no-preference)",
+      () => {
+        const track = document.querySelector<HTMLElement>("[data-stack-track]");
+        const rows = gsap.utils.toArray<HTMLElement>("[data-stack-row]");
+        if (!track || rows.length < 2) return;
+
+        // Starting positions: row 1 in place, row 2 peeking, the rest hidden below
+        rows.forEach((row, i) => {
+          if (i === 0) gsap.set(row, { yPercent: 0, y: 0, opacity: 1 });
+          else if (i === 1)
+            gsap.set(row, { yPercent: 100, y: -PEEK, opacity: 1 });
+          else gsap.set(row, { yPercent: 100, y: 0, opacity: 1 });
+        });
+
+        const tl = gsap.timeline({
+          defaults: { ease: "none" },
+          scrollTrigger: {
+            trigger: track,
+            start: "top bottom",
+            end: "bottom bottom",
+            scrub: 0.6,
+          },
+        });
+
+        rows.forEach((row, i) => {
+          if (i === 0) return;
+          const at = i - 1;
+          tl.to(row, { yPercent: 0, y: 0, duration: 1 }, at);
+          tl.to(rows[i - 1], { opacity: 0.25, y: -24, duration: 1 }, at);
+          if (rows[i + 1]) tl.to(rows[i + 1], { y: -PEEK, duration: 1 }, at);
+        });
+      }
+    );
 
     return () => mm.revert();
   });
