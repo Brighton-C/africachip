@@ -89,25 +89,20 @@ export default async function ServicesPage() {
                   data-stagger
                   className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4"
                 >
-                  {row.map((service, i) => {
+                  {row.map((service) => {
                     const category = getServiceCategory(service.name);
-                    const globalIndex = rowIndex * 4 + i;
 
                     return (
                       <div key={service.id} data-stagger-item>
-                        <p className="font-display text-5xl font-normal leading-none tracking-[-0.04em] text-steel-300 lg:text-6xl">
-                          {String(globalIndex + 1).padStart(2, "0")}
-                        </p>
-
-                        <p className="mt-8 text-xs uppercase tracking-widest text-steel-500">
+                        <p className="text-xs uppercase tracking-widest text-steel-500">
                           {category.label}
                         </p>
 
-                        <h3 className="mt-2 font-display text-lg font-normal text-navy-950">
+                        <h3 className="mt-3 font-display text-xl font-normal tracking-[-0.02em] text-navy-950">
                           {service.name}
                         </h3>
 
-                        <p className="mt-2 max-w-[18rem] text-sm leading-6 text-steel-500">
+                        <p className="mt-3 max-w-[18rem] text-sm leading-6 text-steel-500">
                           {service.description}
                         </p>
 
